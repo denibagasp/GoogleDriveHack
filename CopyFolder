@@ -1,0 +1,42 @@
+function copyFolderAndContents() {
+  var sourceFolderId = "SOURCE_FOLDER_ID"; // ID of the source folder
+  var destinationFolderName = "Destination Folder"; // Name of the destination folder
+
+  // Get the source folder and its contents
+  var sourceFolder = DriveApp.getFolderById(sourceFolderId);
+  var destinationFolder = DriveApp.createFolder(destinationFolderName);
+  copyFolder(sourceFolder, destinationFolder);
+  
+  Logger.log('Folder and contents copied successfully!');
+}
+
+function copyFolder(source, destination) {
+  // Copy files in the source folder
+  var files = source.getFiles();
+  while (files.hasNext()) {
+    var file = files.next();
+    file.makeCopy(file.getName(), destination);
+  }
+  
+  // Copy subfolders in the source folder
+  var folders = source.getFolders();
+  while (folders.hasNext()) {
+    var folder = folders.next();
+    var newFolder = destination.createFolder(folder.getName());
+    copyFolder(folder, newFolder);
+  }
+}
+
+
+
+Here's how to use this script:
+
+Open the Google Apps Script editor in your Google Drive.
+Clear any existing code and paste the code snippet provided above.
+Replace the "SOURCE_FOLDER_ID" placeholder with the ID of the source folder you want to copy. You can find the folder ID in the URL when you open the folder in Google Drive.
+Modify the destinationFolderName variable to the desired name for the destination folder.
+Save the script.
+Click the "Run" button or press Ctrl + Enter (or Cmd + Enter on macOS) to execute the copyFolderAndContents function.
+The script will create a new folder in Google Drive with the specified name (destinationFolderName) and copy the source folder and its contents, including all subfolders, into the destination folder.
+
+Please note that this script will create copies of the files and folders, so any changes made to the copied files/folders will not be reflected in the original ones.
